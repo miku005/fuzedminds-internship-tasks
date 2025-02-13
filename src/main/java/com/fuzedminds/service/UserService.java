@@ -4,6 +4,7 @@ import com.fuzedminds.entity.User;
 import com.fuzedminds.payload.LoginDto;
 import com.fuzedminds.payload.UserDto;
 import com.fuzedminds.repository.UserRepository;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,21 @@ public class UserService {
     public UserDto addUser(UserDto dto) {
         User user = MapToEntity(dto);
         user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10)));
+        user.setRole("ROLE_USER");
+        User userSaved = userRepository.save(user);
+        return MapToDto(userSaved);
+    }
+    public UserDto createPropertyOwnerAccount(UserDto dto) {
+        User user = MapToEntity(dto);
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10)));
+        user.setRole("ROLE_OWNER");
+        User userSaved = userRepository.save(user);
+        return MapToDto(userSaved);
+    }
+    public UserDto createBlogManagerAccount(UserDto dto) {
+        User user = MapToEntity(dto);
+        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10)));
+        user.setRole("ROLE_BLOGMANAGER");
         User userSaved = userRepository.save(user);
         return MapToDto(userSaved);
     }
@@ -101,7 +117,5 @@ public class UserService {
         }
         return null;
     }
-
-
 
 }

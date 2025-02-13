@@ -18,7 +18,16 @@ private JwtFilter jwtFilter;
     public SecurityFilterChain securityFilterChain(HttpSecurity http ) throws Exception {
         http.csrf().disable().cors().disable();
         http.addFilterBefore(jwtFilter, AuthorizationFilter.class);
-        http.authorizeHttpRequests().anyRequest().permitAll();
+//        http.authorizeHttpRequests().anyRequest().permitAll();
+            http.authorizeHttpRequests().requestMatchers("/api/user/sign-up","/api/user/login","/api/user/property/sign-up")
+                    .permitAll()
+                    .requestMatchers("/api/v1/property/addProperty")
+                    .hasRole("OWNER")
+                    .requestMatchers("/api/v1/property/deleteProperty")
+                    .hasAnyRole("OWNER","ADMIN")
+                    .requestMatchers("/api/user/blog/sign-up")
+                    .hasRole("ADMIN")
+                    .anyRequest().authenticated();
         return http.build();
     }
 }

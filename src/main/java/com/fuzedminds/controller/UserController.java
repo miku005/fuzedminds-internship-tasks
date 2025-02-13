@@ -39,6 +39,38 @@ public class UserController {
         UserDto savedUser = userService.addUser(dto);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
+    @PostMapping("/property/sign-up")
+    public ResponseEntity<?> createPropertyOwnerAccount(@Valid @RequestBody UserDto dto, BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserDto byEmail = userService.findByEmail(dto.getEmail());
+        if (byEmail != null) {
+            return new ResponseEntity<>("Email Already Present!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserDto byMobile = userService.findByMobile(dto.getMobile());
+        if (byMobile != null) {
+            return new ResponseEntity<>("Mobile Number Already Present!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserDto savedUser = userService.createPropertyOwnerAccount(dto);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+    @PostMapping("/blog/sign-up")
+    public ResponseEntity<?> createBlogManagerAccount(@Valid @RequestBody UserDto dto, BindingResult result) {
+        if (result.hasErrors()) {
+            return new ResponseEntity<>(result.getFieldError().getDefaultMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserDto byEmail = userService.findByEmail(dto.getEmail());
+        if (byEmail != null) {
+            return new ResponseEntity<>("Email Already Present!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserDto byMobile = userService.findByMobile(dto.getMobile());
+        if (byMobile != null) {
+            return new ResponseEntity<>("Mobile Number Already Present!", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        UserDto savedUser = userService.createBlogManagerAccount(dto);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginDto loginDto,BindingResult result) {

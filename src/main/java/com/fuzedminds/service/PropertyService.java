@@ -16,20 +16,21 @@ public class PropertyService {
         this.propertyRepository = propertyRepository;
         this.modelMapper = modelMapper;
     }
-
     PropertyDto MapToDto(Property property){
         PropertyDto propertyDto = modelMapper.map(property, PropertyDto.class);
         return propertyDto;
     }
-
     Property MapToEntity(PropertyDto propertyDto){
         Property property = modelMapper.map(propertyDto, Property.class);
         return property;
     }
-
     public PropertyDto addProperty(PropertyDto propertyDto) {
         Property property = MapToEntity(propertyDto);
         Property propertySaved = propertyRepository.save(property);
         return MapToDto(propertySaved);
+    }
+
+    public void deleteProperty(long id) {
+        propertyRepository.deleteById(id);
     }
 }

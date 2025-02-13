@@ -4,10 +4,7 @@ import com.fuzedminds.payload.PropertyDto;
 import com.fuzedminds.service.PropertyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/property")
@@ -22,5 +19,10 @@ public class PropertyController {
     public ResponseEntity<?> addProperty(@RequestBody PropertyDto propertyDto){
         PropertyDto addProperty = propertyService.addProperty(propertyDto);
         return new ResponseEntity<>(addProperty, HttpStatus.CREATED);
+    }
+    @DeleteMapping
+    public ResponseEntity<?> deleteProperty(@RequestParam long id){
+        propertyService.deleteProperty(id);
+        return new ResponseEntity<>("Property deleted successfully", HttpStatus.OK);
     }
 }
